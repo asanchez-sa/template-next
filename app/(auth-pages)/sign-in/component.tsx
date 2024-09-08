@@ -45,6 +45,7 @@ export function SignInComponent({ className, ...props }: Props) {
 
   const onSubmit = async (data: z.infer<typeof SignInSchema>) => {
     setIsLoading(true);
+
     try {
       const result = await SignInAction(data);
 
