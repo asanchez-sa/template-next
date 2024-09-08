@@ -24,29 +24,29 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { SignInSchema } from "@/modules/auth/actions/schemas";
-import { SignInAction } from "@/modules/auth/actions/sign-in.action";
+import { SignUpSchema } from "@/modules/auth/actions/schemas";
+import { SignUpAction } from "@/modules/auth/actions/sign-up.action";
 import { LoaderCircle } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 
 interface Props extends React.HTMLAttributes<HTMLDivElement> {}
 
-export function SignInComponent({ className, ...props }: Props) {
+export function SignUpComponent({ className, ...props }: Props) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
 
-  const form = useForm<z.infer<typeof SignInSchema>>({
-    resolver: zodResolver(SignInSchema),
+  const form = useForm<z.infer<typeof SignUpSchema>>({
+    resolver: zodResolver(SignUpSchema),
     defaultValues: {
       email: "",
       password: "",
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof SignInSchema>) => {
+  const onSubmit = async (data: z.infer<typeof SignUpSchema>) => {
     setIsLoading(true);
     try {
-      const result = await SignInAction(data);
+      const result = await SignUpAction(data);
 
       if (!result?.data?.ok) {
         toast.error(result?.data?.message);
@@ -68,9 +68,9 @@ export function SignInComponent({ className, ...props }: Props) {
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <Card className="mx-auto max-w-sm">
           <CardHeader>
-            <CardTitle className="text-2xl">Login</CardTitle>
+            <CardTitle className="text-2xl">Sign Up</CardTitle>
             <CardDescription>
-              Enter your email below to login to your account
+              Enter your data below to sign up to your account
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -104,15 +104,10 @@ export function SignInComponent({ className, ...props }: Props) {
                   )}
                 />
               </div>
+
               <div className="grid gap-2">
                 <div className="flex items-center">
                   <Label htmlFor="password">Password</Label>
-                  <Link
-                    href="#"
-                    className="ml-auto inline-block text-sm underline"
-                  >
-                    Forgot your password?
-                  </Link>
                 </div>
                 <FormField
                   control={form.control}
@@ -136,21 +131,22 @@ export function SignInComponent({ className, ...props }: Props) {
                   )}
                 />
               </div>
+
               <Button disabled={isLoading} type="submit">
                 {isLoading && (
                   <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />
                 )}
-                Login
+                Sign up
               </Button>
 
               <Button variant="outline" className="w-full">
-                Login with Google
+                Register with Google
               </Button>
             </div>
             <div className="mt-4 text-center text-sm">
-              Don&apos;t have an account?{" "}
-              <Link href="/sign-up" className="underline">
-                Sign up
+              You already have an account?{" "}
+              <Link href="/sign-in" className="underline">
+                Sign in
               </Link>
             </div>
           </CardContent>
